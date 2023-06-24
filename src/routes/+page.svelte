@@ -1,2 +1,17 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script lang="js">
+  export let data
+
+  console.log(data)
+</script>
+
+<ul>
+  {#each data.result as { location, menu, id, price, amount }}
+    <li>
+      {location}
+      {menu}
+      {id}
+      {price}
+      {amount}
+    </li>
+  {/each}
+</ul>
