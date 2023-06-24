@@ -4,14 +4,24 @@
   console.log(data)
 </script>
 
-<ul>
-  {#each data.result as { location, menu, id, price, amount }}
-    <li>
-      {location}
-      {menu}
-      {id}
-      {price}
-      {amount}
-    </li>
-  {/each}
-</ul>
+<!-- Table -->
+<table>
+  <thead>
+    <tr>
+      <th>Location</th>
+      <th>Menu</th>
+      <th>Price</th>
+      <th>Amount</th>
+    </tr>
+  </thead>
+  <tbody>
+    {#each data.result as { location, menu, id, price, amount }}
+      <tr>
+        <td>{location}</td>
+        <td>{menu}</td>
+        <td>{price}</td>
+        <td>{amount}</td>
+      </tr>
+    {/each}
+  </tbody>
+</table>
