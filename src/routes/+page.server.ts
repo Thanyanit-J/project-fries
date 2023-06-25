@@ -1,30 +1,36 @@
-import { drizzle, type BetterSQLite3Database } from "drizzle-orm/better-sqlite3"
 import Database from "better-sqlite3"
 
-import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core"
-import { eq } from "drizzle-orm"
-
-const comp = sqliteTable("comp", {
-  location: text("location"),
-  menu: text("menu"),
-  id: integer("id"),
-  price: integer("price"),
-  amount: integer("amount"),
-})
+export type Fries = {
+  id: number
+  brand: string
+  location: string
+  size: string
+  amount: number
+  weight: number
+  price: number
+}
 
 export async function load() {
-  const sqlite = new Database("db/mc.db")
+  const sqlite = new Database("db/fries.db")
+  const query = `
+    SELECT size, round(avg(amount), 2) as "avg_amount"
+    FROM fries
+    GROUP BY size
+  `
+  const query2 = `
+    SELECT size, price
+    FROM fries
+    GROUP BY price
+  `
+  const query3 = `
+    SELECT size
+    from fries
+    GROUP BY size
+  `
   // Uses raw SQLite
-  const resultRaw = sqlite.prepare("SELECT * FROM comp").all()
+  const result = sqlite.prepare(query).all()
+  const result2 = sqlite.prepare(query2).all()
+  const size_list = sqlite.prepare(query3).all()
 
-  // Uses Drizzle ORM
-  const db: BetterSQLite3Database = drizzle(sqlite)
-  const result = db.select().from(comp).all()
-  const result2 = db.select().from(comp).where(eq(comp.id, 0)).all()
-
-  return {
-    result,
-    result2,
-    resultRaw,
-  }
+  return { result, result2, size_list }
 }
